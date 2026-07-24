@@ -116,6 +116,30 @@ void BubbleSortDescending(){
     }
 }
 
+int Range(){
+    int Max;
+    int Min;
+    int Range;
+    Max=max();
+    Min=min();
+    Range=Max-Min;
+    return Range;
+}
+
+float Median(){
+    BubbleSortAscending();
+    if ((numofentries%2)==0)
+    {
+        int rightmiddle=numofentries/2;
+        int leftmiddle=rightmiddle-1;
+        return (Dataset[rightmiddle]+Dataset[leftmiddle])/2.0f;
+    }
+    else{
+        int middle=numofentries/2.0;
+        return Dataset[middle];
+    }
+}
+
 int main()
 {
     int menu;
@@ -139,7 +163,9 @@ int main()
         printf("5. Search\n");
         printf("6. Bubblesort\n");
         printf("7. Descending Order\n");
-        printf("8. Exit\n");
+        printf("8. Range of given dataset\n");
+        printf("9. Median of given dataset\n");
+        printf("10. Exit\n");
 
         scanf("%d", &menu);
 
@@ -186,8 +212,19 @@ int main()
             }
             printf("\n");
             break;
-        
-        case 8:
+        case 8:{
+            int Result;
+            Result=Range();
+            printf("The Range of given Data is %d", Result);
+            break;
+        }
+        case 9:{
+            int Result;
+            Result=Median();
+            printf("The median for given Dataset is %d",Result);
+            break;
+        }
+        case 10:
             return 1;
             break;
 
