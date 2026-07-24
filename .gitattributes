@@ -1,0 +1,9 @@
+# Normalize text file line endings across platforms
+* text=auto
+
+# Explicitly treat common text files as text (line endings handled by OS)
+*.c text
+*.h text
+*.md text eol=lf
+*.txt text eol=lf
+*.json text eol=lf
