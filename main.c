@@ -1,6 +1,7 @@
 #include <stdio.h>
+#include <ctype.h>
 #define MAX_SIZE 100
-
+FILE *ptr;
 int numofentries = 0;
 int Dataset[MAX_SIZE];
 
@@ -40,7 +41,6 @@ float sum()
     return Sum;
 }
 float avg(){
-    sum();
     float avg;
     avg=sum()/numofentries;
     return avg;
@@ -116,6 +116,46 @@ void BubbleSortDescending(){
     }
 }
 
+void Savedata()
+{
+    FILE *ptr = fopen("Database.txt", "w");
+
+    if (ptr == NULL)
+    {
+        printf("The file could not be opened.\n");
+        return;
+    }
+
+    fprintf(ptr, "%d\n", numofentries);
+
+    for (int i = 0; i < numofentries; i++)
+    {
+        fprintf(ptr, "%d ", Dataset[i]);
+    }
+
+    fprintf(ptr, "\n");
+    fclose(ptr);
+}
+void Loaddata()
+{
+    FILE *ptr = fopen("Database.txt", "r");
+
+    if (ptr == NULL)
+    {
+        printf("The file could not be opened.\n");
+        return;
+    }
+
+    fscanf(ptr, "%d", &numofentries);
+
+    for (int i = 0; i < numofentries; i++)
+    {
+        fscanf(ptr, "%d", &Dataset[i]);
+    }
+
+    fclose(ptr);
+}
+
 int Range(){
     int Max;
     int Min;
@@ -135,28 +175,30 @@ float Median(){
         return (Dataset[rightmiddle]+Dataset[leftmiddle])/2.0f;
     }
     else{
-        int middle=numofentries/2.0;
+        int middle=numofentries/2;
         return Dataset[middle];
     }
 }
 
-int mode(){
-    int count=0;
-    int Askednumber;
-    printf("Enter the number which you want to find Mode\n");
-    scanf("%d", &Askednumber);
-    for (int i = 0; i < numofentries; i++)
-    {
-        if (Askednumber==Dataset[i]){
-            count=count+1;
+int mode()
+{
+    int modeValue = Dataset[0];
+    int highestCount = 0;
+    for (int i = 0; i < numofentries; i++){
+        int count = 0;
+        for (int j = 0; j < numofentries; j++){
+            if (Dataset[i] == Dataset[j]){
+                count++;
+            }
         }
-        else{
-            count=count+0;
+
+        if (count > highestCount){
+            highestCount = count;
+            modeValue = Dataset[i];
         }
     }
-    return count;
+    return modeValue;
 }
-
 
 int main()
 {
@@ -184,6 +226,8 @@ int main()
         printf("8. Range of given dataset\n");
         printf("9. Median of given dataset\n");
         printf("10. Mode of given dataset\n");
+        printf("11. Save dataset\n");
+        printf("12. Load dataset\n");
         printf("15. Exit\n");
 
         scanf("%d", &menu);
@@ -238,9 +282,9 @@ int main()
             break;
         }
         case 9:{
-            int Result;
-            Result=Median();
-            printf("The Median for given Dataset is %d",Result);
+            float Result;
+            Result = Median();
+            printf("The Median for given Dataset is %.2f\n", Result);
             break;
         }
         case 10:{
@@ -248,9 +292,31 @@ int main()
             printf("The Mode for given Dataset is %d", Result);
             break;
         }
-        case 15:
-            return 1;
+        case 11:{
+            char confirmation;
+            printf("Are you sure you want to save this dataset? (y/n): ");
+            scanf(" %c", &confirmation);
+            if (tolower((unsigned char)confirmation) == 'y'){
+                Savedata();
+                printf("The given dataset is saved.\n");
+            }
+            else{
+                printf("Save cancelled.\n");
+            }
             break;
+        }
+        case 12:
+        {
+            Loaddata();
+            printf("Here is your loaded dataset:\n");
+            for (int i = 0; i < numofentries; i++){
+                printf("%d ", Dataset[i]);
+            }
+            printf("\n");
+            break;
+        }
+        case 15:
+            return 0;
 
         default:
             printf("Invalid option.\n");
