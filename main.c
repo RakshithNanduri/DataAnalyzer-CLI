@@ -140,6 +140,24 @@ float Median(){
     }
 }
 
+int mode(){
+    int count=0;
+    int Askednumber;
+    printf("Enter the number which you want to find Mode\n");
+    scanf("%d", &Askednumber);
+    for (int i = 0; i < numofentries; i++)
+    {
+        if (Askednumber==Dataset[i]){
+            count=count+1;
+        }
+        else{
+            count=count+0;
+        }
+    }
+    return count;
+}
+
+
 int main()
 {
     int menu;
@@ -165,7 +183,8 @@ int main()
         printf("7. Descending Order\n");
         printf("8. Range of given dataset\n");
         printf("9. Median of given dataset\n");
-        printf("10. Exit\n");
+        printf("10. Mode of given dataset\n");
+        printf("15. Exit\n");
 
         scanf("%d", &menu);
 
@@ -221,10 +240,15 @@ int main()
         case 9:{
             int Result;
             Result=Median();
-            printf("The median for given Dataset is %d",Result);
+            printf("The Median for given Dataset is %d",Result);
             break;
         }
-        case 10:
+        case 10:{
+            int Result=mode();
+            printf("The Mode for given Dataset is %d", Result);
+            break;
+        }
+        case 15:
             return 1;
             break;
 
