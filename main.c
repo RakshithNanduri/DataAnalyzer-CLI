@@ -1,28 +1,27 @@
 #include <stdio.h>
 #include <ctype.h>
-#define MAX_SIZE 100
-FILE *ptr;
+#include <stdlib.h>
+
+int *Dataset = NULL;
 int numofentries = 0;
-int Dataset[MAX_SIZE];
 
-void checkdatasetsize()
-{
-    if (numofentries == 0)
-    {
+void checkdatasetsize(){
+    if (numofentries == 0){
         printf("Your dataset is empty.\n");
-
         printf("How many elements does this dataset contain?\n");
         scanf("%d", &numofentries);
-
-        if (numofentries <= 0 || numofentries > MAX_SIZE)
-        {
-            printf("Dataset size must be between 1 and %d.\n", MAX_SIZE);
+        if (numofentries <= 0){
+            printf("Dataset size must be greater than 0.\n");
             numofentries = 0;
             return;
         }
-
-        for (int i = 0; i < numofentries; i++)
-        {
+        Dataset = malloc(numofentries * sizeof(int));
+        if (Dataset == NULL){
+            printf("Memory allocation failed.\n");
+            numofentries = 0;
+            return;
+        }
+        for (int i = 0; i < numofentries; i++){
             printf("Enter data element %d: ", i + 1);
             scanf("%d", &Dataset[i]);
         }
@@ -136,23 +135,25 @@ void Savedata()
     fprintf(ptr, "\n");
     fclose(ptr);
 }
-void Loaddata()
-{
+void Loaddata(){
     FILE *ptr = fopen("Database.txt", "r");
-
-    if (ptr == NULL)
-    {
+    if (ptr == NULL){
         printf("The file could not be opened.\n");
         return;
     }
-
-    fscanf(ptr, "%d", &numofentries);
-
-    for (int i = 0; i < numofentries; i++)
-    {
+    int newSize;
+    fscanf(ptr, "%d", &newSize);
+    int *temporary = realloc(Dataset, newSize * sizeof(int));
+    if (temporary == NULL){
+        printf("Memory reallocation failed.\n");
+        fclose(ptr);
+        return;
+    }
+    Dataset = temporary;
+    numofentries = newSize;
+    for (int i = 0; i < numofentries; i++){
         fscanf(ptr, "%d", &Dataset[i]);
     }
-
     fclose(ptr);
 }
 
@@ -200,6 +201,27 @@ int mode()
     return modeValue;
 }
 
+int BinarySearch(){
+    int Search;
+    printf("Enter the number you desire for Binary Search: ");
+    scanf("%d", &Search);
+    int low = 0;
+    int high = numofentries - 1;
+    while (low <= high){
+        int middle = (low + high) / 2;
+        if (Dataset[middle] == Search){
+            return middle;
+        }
+        else if (Dataset[middle] > Search){
+            high = middle - 1;
+        }
+        else{
+            low = middle + 1;
+        }
+    }
+
+    return -1;
+}
 int main()
 {
     int menu;
@@ -315,7 +337,23 @@ int main()
             printf("\n");
             break;
         }
+        case 13:
+        {
+            BubbleSortAscending();
+            int Result = BinarySearch();
+            if (Result == -1)
+            {
+                printf("Value was not found.\n");
+            }
+            else
+            {
+                printf("Value was found at index %d in the sorted dataset.\n", Result);
+            }
+            break;
+        }
         case 15:
+            free(Dataset);
+            Dataset = NULL;
             return 0;
 
         default:
