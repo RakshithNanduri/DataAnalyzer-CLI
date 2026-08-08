@@ -4,8 +4,6 @@ _A lightweight data analysis tool written in pure C — run entirely from your t
 
 <p align="center">
   <img src="https://img.shields.io/badge/language-C-00599C?style=flat-square" alt="Language: C">
-  <img src="https://img.shields.io/badge/build-passing-22c55e?style=flat-square" alt="Build: Passing">
-  <img src="https://img.shields.io/badge/license-MIT-8b5cf6?style=flat-square" alt="License: MIT">
   <img src="https://img.shields.io/badge/platform-Windows%20|%20Linux%20|%20macOS-06b6d4?style=flat-square" alt="Platforms">
 </p>
 
@@ -13,7 +11,7 @@ _A lightweight data analysis tool written in pure C — run entirely from your t
 
 ## What is this?
 
-**DataAnalyzer-CLI** is a command-line program that lets you enter a dataset and run various statistical operations on it — sum, average, min, max, range, median, mode, search, and sorting. It saves your data to a file so you can come back to it later.
+**DataAnalyzer-CLI** is a command-line program that lets you enter a dataset and run statistical and algorithmic operations on it — sum, average, minimum, maximum, range, median, mode, linear search, binary search, and sorting. It can also save data to a file so you can return to it later.
 
 Everything runs in your terminal with a simple numbered menu.
 
@@ -57,28 +55,31 @@ cl main.c /Fe:dataanalyzer.exe
 
 ### 3. Use the menu
 
-```
+```text
 --------------- Menu ---------------
 1.  Sum
 2.  Average
 3.  Minimum
 4.  Maximum
 5.  Search
-6.  Bubblesort (Ascending)
-7.  Bubblesort (Descending)
-8.  Range
-9.  Median
-10. Mode
+6.  Bubblesort
+7.  Descending Order
+8.  Range of given dataset
+9.  Median of given dataset
+10. Mode of given dataset
 11. Save dataset
 12. Load dataset
+13. Binary Search
 15. Exit
 ```
+
+Binary Search first sorts the current dataset into ascending order, then performs the search on that sorted dataset.
 
 ---
 
 ## Example
 
-```
+```text
 Your dataset: [10 20 30 40 50]
 
 Enter your choice: 1
@@ -92,16 +93,16 @@ Median of given dataset is 30.00
 
 ## Project Structure
 
-```
+```text
 DataAnalyzer-CLI/
 ├── main.c           # The entire program
-├── Database.txt     # Auto-generated data file
+├── Database.txt     # Data file used by save/load
 ├── README.md
 ├── .gitignore
 └── .gitattributes
 ```
 
-The whole application lives in a single `main.c` file — no external dependencies, no configuration files, just one file to compile and run.
+The whole application lives in a single `main.c` file — no external dependencies or configuration files are required to compile it.
 
 ---
 
@@ -109,11 +110,11 @@ The whole application lives in a single `main.c` file — no external dependenci
 
 - **Memory**: Dynamically allocated array using `malloc` / `realloc`
 - **Persistence**: Saves/loads dataset to/from `Database.txt` in plain text
-- **Algorithms**: Bubble Sort (O(n²)), Linear Search (O(n)), Binary Search (O(log n))
+- **Algorithms**: Bubble Sort (O(n²)), Linear Search (O(n)), Binary Search (O(log n) after sorting)
 - **Functions**: `sum()`, `avg()`, `min()`, `max()`, `Range()`, `Median()`, `mode()`, `LinearSearch()`, `BinarySearch()`, `BubbleSortAscending()`, `BubbleSortDescending()`, `Savedata()`, `Loaddata()`
 
 ---
 
-## License
+## Current Scope
 
-MIT
+This project is a learning-focused C application. It currently uses a single source file and a plain-text persistence format. It does not yet include automated tests or continuous integration.
