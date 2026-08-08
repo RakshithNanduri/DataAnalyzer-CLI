@@ -250,6 +250,7 @@ int main()
         printf("10. Mode of given dataset\n");
         printf("11. Save dataset\n");
         printf("12. Load dataset\n");
+        printf("13. Binary Search\n");
         printf("15. Exit\n");
 
         scanf("%d", &menu);
