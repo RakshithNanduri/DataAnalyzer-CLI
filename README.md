@@ -3,6 +3,7 @@
 _A lightweight data analysis tool written in pure C — run entirely from your terminal._
 
 <p align="center">
+  <a href="https://github.com/RakshithNanduri/DataAnalyzer-CLI/actions/workflows/build.yml"><img src="https://github.com/RakshithNanduri/DataAnalyzer-CLI/actions/workflows/build.yml/badge.svg" alt="Build status"></a>
   <img src="https://img.shields.io/badge/language-C-00599C?style=flat-square" alt="Language: C">
   <img src="https://img.shields.io/badge/platform-Windows%20|%20Linux%20|%20macOS-06b6d4?style=flat-square" alt="Platforms">
 </p>
@@ -95,14 +96,15 @@ Median of given dataset is 30.00
 
 ```text
 DataAnalyzer-CLI/
-├── main.c           # The entire program
-├── Database.txt     # Data file used by save/load
+├── .github/workflows/build.yml  # GitHub Actions compile check
+├── main.c                       # The entire program
+├── Database.txt                 # Data file used by save/load
 ├── README.md
 ├── .gitignore
 └── .gitattributes
 ```
 
-The whole application lives in a single `main.c` file — no external dependencies or configuration files are required to compile it.
+The whole application logic lives in a single `main.c` file — no external dependencies or configuration files are required to compile it.
 
 ---
 
@@ -112,9 +114,10 @@ The whole application lives in a single `main.c` file — no external dependenci
 - **Persistence**: Saves/loads dataset to/from `Database.txt` in plain text
 - **Algorithms**: Bubble Sort (O(n²)), Linear Search (O(n)), Binary Search (O(log n) after sorting)
 - **Functions**: `sum()`, `avg()`, `min()`, `max()`, `Range()`, `Median()`, `mode()`, `LinearSearch()`, `BinarySearch()`, `BubbleSortAscending()`, `BubbleSortDescending()`, `Savedata()`, `Loaddata()`
+- **CI**: GitHub Actions compiles `main.c` with GCC on every push and pull request
 
 ---
 
 ## Current Scope
 
-This project is a learning-focused C application. It currently uses a single source file and a plain-text persistence format. It does not yet include automated tests or continuous integration.
+This project is a learning-focused C application. It currently uses a single source file and a plain-text persistence format. The repository has an automated compile check, but it does not yet include automated behavioral tests.
