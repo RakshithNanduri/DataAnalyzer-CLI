@@ -1,50 +1,52 @@
 # DataAnalyzer-CLI
 
-A command-line data analysis program written in C. It provides basic statistics, searching, sorting, text-file persistence, and runtime-sized dataset storage using `malloc`, `realloc`, and `free`.
+A menu-driven C program for working with integer datasets from the terminal. It can calculate basic statistics, search and sort values, save data to a text file, load it again, and resize the active dataset with dynamic memory.
 
 <p align="left">
   <a href="https://github.com/RakshithNanduri/DataAnalyzer-CLI/actions/workflows/build.yml"><img src="https://github.com/RakshithNanduri/DataAnalyzer-CLI/actions/workflows/build.yml/badge.svg" alt="Build status"></a>
   <img src="https://img.shields.io/badge/Language-C-00599C?style=flat-square&logo=c&logoColor=white" alt="C">
   <img src="https://img.shields.io/badge/Interface-CLI-111827?style=flat-square" alt="CLI">
-  <img src="https://img.shields.io/badge/Storage-Dynamic%20Memory-475569?style=flat-square" alt="Dynamic memory">
+  <img src="https://img.shields.io/badge/Memory-malloc%20%2F%20realloc-475569?style=flat-square" alt="Dynamic memory">
 </p>
 
-## Overview
+[Portfolio case study](https://rakshith-nanduri-portfolio.vercel.app/work/data-analyzer)
 
-DataAnalyzer-CLI is a learning-focused C application for working with integer datasets from the terminal. A user can enter data, calculate descriptive statistics, search for values, sort the dataset, save it to a text file, and load it again later.
+## Why I built it
 
-I built the project to move beyond small standalone C exercises and practise several responsibilities inside one program: array processing, algorithms, functions, file handling, and manual memory management.
+I wanted one C project where the array and algorithm topics I had been practising had to work together instead of living in separate exercise files.
 
-## Capabilities
+DataAnalyzer-CLI became that project: one active dataset, a menu of operations, file persistence, and manual memory management.
+
+## What it can do
 
 | Area | Operations |
 |---|---|
 | Statistics | Sum, average, minimum, maximum, range, median, mode |
 | Search | Linear Search, Binary Search |
-| Sorting | Bubble Sort in ascending and descending order |
-| Memory | Runtime allocation with `malloc`, resizing with `realloc`, cleanup with `free` |
-| Persistence | Save dataset to `Database.txt`, load it back into memory |
-| Safety checks | Invalid size, allocation failure, reallocation failure, missing file |
+| Sorting | Bubble Sort ascending and descending |
+| Memory | `malloc`, `realloc`, `free` |
+| Persistence | Save to and load from `Database.txt` |
+| Checks | Invalid size, allocation/reallocation failure, missing file |
 
-## How the program works
+## Program flow
 
 ```text
-Create or load dataset
+Enter or load a dataset
         |
         v
-Runtime-sized integer storage
+Dynamically allocated integer storage
         |
         +--> Statistics
         +--> Linear Search
         +--> Bubble Sort
-        +--> Binary Search after sorting
-        +--> Save to file
+        +--> Binary Search on sorted data
+        +--> Save / load
         |
         v
-Free allocated memory on exit
+Release memory on exit
 ```
 
-The program keeps the current dataset in dynamically allocated memory. Loading a stored dataset can change its required size, so the allocation is resized before the values are read into memory.
+The active dataset is allocated at runtime instead of using a fixed-size array. When a stored dataset has a different size, the program resizes the allocation before loading its values.
 
 ## Project structure
 
@@ -60,16 +62,16 @@ DataAnalyzer-CLI/
 └── .gitattributes
 ```
 
-The current application intentionally remains in one C source file. This keeps the project focused on algorithms, file handling, and memory management rather than introducing a multi-file architecture before it is needed.
+The program stays in one C source file on purpose. At this stage I wanted to focus on the algorithms, files, and memory rather than turn it into a multi-file architecture exercise.
 
 ## Build and run
 
 ### Requirements
 
-- A C compiler such as GCC, Clang, or MSVC
+- GCC, Clang, MSVC, or another C compiler
 - A terminal or command prompt
 
-### Clone the repository
+### Clone
 
 ```bash
 git clone https://github.com/RakshithNanduri/DataAnalyzer-CLI.git
@@ -96,15 +98,13 @@ Windows:
 .\dataanalyzer.exe
 ```
 
-MSVC can also compile the program with:
+MSVC:
 
 ```powershell
 cl main.c /Fe:dataanalyzer.exe
 ```
 
-## Available operations
-
-The numbered menu provides operations for:
+## Menu operations
 
 ```text
 Sum
@@ -123,9 +123,9 @@ Binary Search
 Exit
 ```
 
-Binary Search is used on sorted data. The current implementation sorts the active dataset into ascending order before carrying out that search.
+Binary Search is only used after the data has been put into ascending order.
 
-## Example session
+## Example
 
 ```text
 Dataset: 10 20 30 40 50
@@ -137,74 +137,67 @@ Choose: Median
 Result: 30
 ```
 
-The exact terminal wording depends on the current program output, but the workflow is menu-driven throughout.
+The exact prompts depend on the current menu output, but the program stays terminal-based throughout.
 
-## Implementation details
+## A few implementation details
 
-### Dynamic dataset storage
+### Dynamic memory
 
-The dataset size is chosen at runtime. Memory is allocated with `malloc` instead of using a fixed-capacity global array.
+The user chooses the dataset size at runtime, so the program allocates memory with `malloc`.
 
-When a saved dataset is loaded, `realloc` is called through a temporary pointer. The original allocation is retained if resizing fails.
+When loading saved data, `realloc` is used through a temporary pointer so the old allocation is not immediately lost if resizing fails.
 
 ### Statistics
 
-The program calculates:
-
-- sum and average;
-- minimum and maximum;
-- range as maximum minus minimum;
-- median after ordering the data;
-- mode through occurrence counting.
+The program calculates sum, average, minimum, maximum, range, median, and mode. Median uses ordered data; mode is found by counting repeated values.
 
 ### Searching
 
-Linear Search scans values in sequence and returns the matching index when a target is found.
+Linear Search checks values in sequence.
 
-Binary Search works on ascending data and repeatedly reduces the remaining search interval until the target is found or no search range remains.
+Binary Search works on sorted data and repeatedly narrows the remaining search range until the value is found or there is nowhere left to search.
 
 ### Sorting
 
-Bubble Sort is implemented in both ascending and descending order. It is intentionally the only sorting algorithm in the current version.
+Bubble Sort is implemented in both ascending and descending order. It is intentionally the only sorting algorithm in this version.
 
 ### File persistence
 
-`Database.txt` stores the dataset so it can be restored in a later program run. The loader reads the stored size, resizes the active allocation, and then reads the stored values.
+`Database.txt` stores a dataset so it can be restored later. The loader reads the stored size, resizes the active memory, and then loads the values.
 
-## Automated build check
+## Build check
 
-GitHub Actions compiles `main.c` on pushes and pull requests. This catches build regressions, but the repository does not currently include automated behavioral tests for the interactive menu or numerical results.
+GitHub Actions compiles `main.c` on pushes and pull requests. It catches build problems, but the repository does not currently run automated interactive or numerical behavior tests.
 
 ## What I learned
 
-This project gave me practical experience with:
+This project helped several C ideas click together for me:
 
-- separating values from their array indexes;
+- keeping array indexes separate from the values stored at those indexes;
 - writing search and sorting functions;
-- understanding why Binary Search requires sorted data;
+- understanding why Binary Search needs sorted data;
 - allocating memory at runtime;
-- resizing memory without losing the original pointer on failure;
-- releasing memory before program exit;
-- combining algorithms with file persistence in one C program.
+- resizing memory without immediately throwing away the original pointer;
+- freeing memory before the program exits;
+- combining algorithms with file save/load behavior.
 
-The project was completed with AI-assisted guidance and debugging. Later blank-file practice showed that some algorithm details, especially multi-step state tracking and exact loop boundaries, still need repetition. The repository therefore documents guided implementation experience rather than complete DSA mastery.
+## Limits of this version
 
-## Current limitations
-
-- Single-file C implementation
+- One C source file
 - Integer datasets only
 - Bubble Sort is the only sorting algorithm
 - Plain-text persistence
-- Basic `scanf`-based interactive input
-- No automated behavioral test suite
-- No performance benchmarking or algorithm comparison
+- Basic `scanf`-based input
+- No automated behavior test suite
+- No benchmarking or algorithm comparison
 
-The project is feature-frozen at its current learning goal. Future changes should address a reproduced bug or a specific learning objective rather than add features only to make the repository appear larger.
+The project is feature-frozen at this learning goal. I would rather keep a small project I understand than keep adding features only to make the repository look larger.
 
-## Author
+## Build context
 
-**Rakshith Nanduri**  
-Computer Science student building foundations in C, Python, algorithms, and software engineering.
+I completed DataAnalyzer-CLI with AI-assisted guidance and debugging. Later blank-file practice showed that some algorithm details and loop boundaries still need repetition, so I treat this as guided implementation experience rather than complete DSA mastery.
 
-- GitHub: https://github.com/RakshithNanduri
-- Portfolio: https://rakshith-nanduri-portfolio.vercel.app
+---
+
+**Rakshith Nanduri** · Computer Science student  
+[GitHub](https://github.com/RakshithNanduri) · [Portfolio](https://rakshith-nanduri-portfolio.vercel.app)
